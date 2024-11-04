@@ -37,10 +37,14 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className="container mx-auto px-4 max-w-2xl">
+      <h1 className="text-3xl font-bold text-center mt-4 mb-6">
+        Public Holidays
+      </h1>
       <select
         value={selectedCountry}
         onChange={(e) => setSelectedCountry(e.target.value)}
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
       >
         {countries.map((country) => (
           <option key={country.isoCode} value={country.isoCode}>
@@ -48,17 +52,19 @@ function App() {
           </option>
         ))}
       </select>
-      <ul>
-        {holidays.map((holiday) => (
-          <li key={holiday.id}>
-            {formatHolidayInterval(holiday)}
-            {" - "}
-            <em style={{ fontSize: "18px", fontWeight: "bold" }}>
-              {holiday.name}
-            </em>
-          </li>
-        ))}
-      </ul>
+      <div className="mt-6">
+        <ul className="mx-auto w-fit">
+          {holidays.map((holiday) => (
+            <li key={holiday.id}>
+              {formatHolidayInterval(holiday)}
+              {" - "}
+              <em style={{ fontSize: "18px", fontWeight: "bold" }}>
+                {holiday.name}
+              </em>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
