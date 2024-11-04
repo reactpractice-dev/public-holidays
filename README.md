@@ -1,8 +1,14 @@
-# React + Vite
+# Build a Public Holidays app
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> This repository is the companion to the ["Build a Public Holidays app"](https://reactpractice.dev/exercise/build-a-public-holidays-app/?utm_source=github&utm_medium=social&utm_campaign=public-holidays) practice exercise.
 
-Currently, two official plugins are available:
+Build a React application that shows the national holidays for the current year, for a given country.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+You can retrieve a list of available countries and their holidays from the [OpenHolidays API](https://www.openholidaysapi.org/en/api/).
+
+By default, you should show the holidays for The Netherlands.
+
+## Getting started:
+
+- `npm install`
+- `npm run dev`
