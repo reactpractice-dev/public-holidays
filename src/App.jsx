@@ -1,18 +1,6 @@
 import { useEffect, useState } from "react";
+import { getPublicHolidays, getSupportedCountries } from "./api";
 import "./App.css";
-
-const getPublicHolidays = async () => {
-  const params = new URLSearchParams({
-    countryIsoCode: "NL",
-    languageIsoCode: "EN",
-    validFrom: "2024-01-01",
-    validTo: "2024-12-31",
-  });
-  const response = await fetch(
-    `https://openholidaysapi.org/PublicHolidays?${params}`
-  );
-  return response.json();
-};
 
 const formatHolidayDate = (date) => {
   return new Date(date).toLocaleDateString("en-US", {
@@ -31,32 +19,47 @@ const formatHolidayInterval = (holiday) => {
 
 function App() {
   const [holidays, setHolidays] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("NL");
 
   useEffect(() => {
-    getPublicHolidays().then((data) => {
-      setHolidays(
-        data.map((holiday) => ({
-          id: holiday.id,
-          name: holiday.name?.[0].text,
-          startDate: holiday.startDate,
-          endDate: holiday.endDate,
-        }))
-      );
+    // Initial request to fetch the public holidays for the Netherlands
+    getPublicHolidays({ countryIsoCode: selectedCountry }).then((data) =>
+      setHolidays(data)
+    );
+  }, [selectedCountry]);
+
+  useEffect(() => {
+    // Initial request to fetch the supported countries
+    getSupportedCountries().then((data) => {
+      setCountries(data);
     });
   }, []);
 
   return (
-    <ul>
-      {holidays.map((holiday) => (
-        <li key={holiday.id}>
-          {formatHolidayInterval(holiday)}
-          {" - "}
-          <em style={{ fontSize: "18px", fontWeight: "bold" }}>
-            {holiday.name}
-          </em>
-        </li>
-      ))}
-    </ul>
+    <div>
+      <select
+        value={selectedCountry}
+        onChange={(e) => setSelectedCountry(e.target.value)}
+      >
+        {countries.map((country) => (
+          <option key={country.isoCode} value={country.isoCode}>
+            {country.name}
+          </option>
+        ))}
+      </select>
+      <ul>
+        {holidays.map((holiday) => (
+          <li key={holiday.id}>
+            {formatHolidayInterval(holiday)}
+            {" - "}
+            <em style={{ fontSize: "18px", fontWeight: "bold" }}>
+              {holiday.name}
+            </em>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
