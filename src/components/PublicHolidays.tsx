@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCountries } from "../api";
+import { getCountries, getPublicHolidays } from "../api";
 import { useState } from "react";
 
 const PublicHolidays = () => {
@@ -7,6 +7,10 @@ const PublicHolidays = () => {
   const { data: countries, isLoading: areCountriesLoading } = useQuery({
     queryKey: ["countries"],
     queryFn: getCountries,
+  });
+  const { data: publicHolidays } = useQuery({
+    queryKey: ["holidays", selectedCountry],
+    queryFn: () => getPublicHolidays(selectedCountry),
   });
   return (
     <div className="container paper margin-top-large">
@@ -22,6 +26,17 @@ const PublicHolidays = () => {
         ))}
         {areCountriesLoading && <option>Loading...</option>}
       </select>
+      <ul>
+        {publicHolidays?.map((holiday) => (
+          <li key={holiday.id}>
+            {new Date(holiday.startDate).toLocaleDateString(undefined, {
+              day: "numeric",
+              month: "long",
+            })}{" "}
+            - {holiday.name?.[0].text}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
